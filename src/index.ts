@@ -36,6 +36,7 @@ app.get("/", async (req, res) => {
     <p>API Documentation</p>
     <ul>
       <li><a href="/user">/user</a></li>
+      <li><a href="/entry-sheet">/entry-sheet</a></li>
     </ul>
 
     
