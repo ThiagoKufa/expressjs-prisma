@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, {  Response } from "express";
 import { PrismaClient, User } from "@prisma/client";
 import { UserContoller } from "./controllers/user-contorller";
 import { EntrySheetController } from "./controllers/entry-sheet-controller";

@@ -1,5 +1,5 @@
 import { EntrySheet} from "@prisma/client";
-import { prisma } from "../server";
+import { prisma } from "../index";
 import { Request, Response } from "express";
 
 export class EntrySheetController {
