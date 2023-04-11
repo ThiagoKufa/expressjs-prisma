@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import express from "express";
 import { UserContoller } from "./controllers/user-contorller";
+import { EntrySheetController } from "./controllers/entry-sheet-controller";
 
 export const prisma = new PrismaClient();
 
@@ -19,6 +20,15 @@ app.get("/user/:id", users.findById);
 app.put("/user/:id", users.update);
 app.delete("/user/:id", users.delete);
 
+const entrySheet = new EntrySheetController()
+
+app.get("/entry-sheet", entrySheet.findMany);
+app.post("/entry-sheet", entrySheet.create);
+app.get("/entry-sheet/:id", entrySheet.findById);
+app.put("/entry-sheet/:id", entrySheet.update);
+app.delete("/entry-sheet/:id", entrySheet.delete);
+
+
 app.get("/", async (req, res) => {
   res.send(
     `
@@ -26,9 +36,8 @@ app.get("/", async (req, res) => {
     <p>API Documentation</p>
     <ul>
       <li><a href="/user">/user</a></li>
-      <li><a href="/user/1">/user/1</a></li>
     </ul>
-    
+
     
   `.trim(),
   );
