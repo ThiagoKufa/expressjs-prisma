@@ -1,40 +1,33 @@
-import express, { Request, Response } from "express";
-
-import { PrismaClient, User } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
+import express from "express";
 import { UserContoller } from "./controllers/user-contorller";
-import { EntrySheetController } from "./controllers/entry-sheet-controller";
 
 export const prisma = new PrismaClient();
 
 const app = express();
-const PORT = 3000;
-const user = new UserContoller()
-const entrySheet = new EntrySheetController();
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
-app.get("/", (req: Request, res: Response) => { 
-  res.send(`
-    <h1>API</h1>
-    <ul>
-      <li><a href="/user">/user</a></li>
-      <li><a href="/entry-sheet">/entry-sheet</a></li>
-    </ul>
+app.use(express.raw({ type: "application/vnd.custom-type" }));
+app.use(express.text({ type: "text/html" }));
 
-  `)
+const users = new UserContoller()
+
+app.get("/users", users.findMany );
+
+app.get("/", async (req, res) => {
+  res.send(
+    `
+  <h1>Todo REST API</h1>
+  <h2>Available Routes</h2>
+  <pre>
+    GET, POST /todos
+    GET, PUT, DELETE /todos/:id
+  </pre>
+  `.trim(),
+  );
 });
-app.get("/user", user.findMany);
-app.post("/user", user.create);
-app.put("/user/:id", user.update);
-app.delete("/user/:id", user.delete);
-app.get("/user/:id", user.findById);
 
-app.get("/entry-sheet", entrySheet.findMany);
-app.post("/entry-sheet", entrySheet.create);
-app.put("/entry-sheet/:id", entrySheet.update);
-app.delete("/entry-sheet/:id", entrySheet.delete);
-app.get("/entry-sheet/:id", entrySheet.findById);
-app.get("/entry-sheet/user/:id", entrySheet.findAllByUser);
-
-app.listen(PORT, () => {
-  console.log(`🚀 Server ready at http://localhost:${PORT}`);
+app.listen(Number(port), "0.0.0.0", () => {
+    console.log(`Example app listening at http://localhost:${port}`);
 });
