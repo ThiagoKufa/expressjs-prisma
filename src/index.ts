@@ -22,12 +22,14 @@ app.delete("/user/:id", users.delete);
 app.get("/", async (req, res) => {
   res.send(
     `
-  <h1>Todo REST API</h1>
-  <h2>Available Routes</h2>
-  <pre>
-    GET, POST /todos
-    GET, PUT, DELETE /todos/:id
-  </pre>
+    <h1>AbaApp</h1>
+    <p>API Documentation</p>
+    <ul>
+      <li><a href="/user">/user</a></li>
+      <li><a href="/user/1">/user/1</a></li>
+    </ul>
+    
+    
   `.trim(),
   );
 });
