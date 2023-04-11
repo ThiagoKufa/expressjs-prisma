@@ -13,7 +13,8 @@ app.use(express.text({ type: "text/html" }));
 
 const users = new UserContoller()
 
-app.get("/users", users.findMany );
+app.get("/user", users.findMany);
+app.post("/user", users.create);
 
 app.get("/", async (req, res) => {
   res.send(
