@@ -1,4 +1,5 @@
-import express, {  Response } from "express";
+import express, { Request, Response } from "express";
+
 import { PrismaClient, User } from "@prisma/client";
 import { UserContoller } from "./controllers/user-contorller";
 import { EntrySheetController } from "./controllers/entry-sheet-controller";
@@ -11,7 +12,7 @@ const user = new UserContoller()
 const entrySheet = new EntrySheetController();
 
 app.use(express.json());
-app.get("/", (res : Response) => { 
+app.get("/", (req: Request, res: Response) => { 
   res.send(`
     <h1>API</h1>
     <ul>
