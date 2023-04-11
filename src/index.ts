@@ -15,6 +15,9 @@ const users = new UserContoller()
 
 app.get("/user", users.findMany);
 app.post("/user", users.create);
+app.get("/user/:id", users.findById);
+app.put("/user/:id", users.update);
+app.delete("/user/:id", users.delete);
 
 app.get("/", async (req, res) => {
   res.send(
