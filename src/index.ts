@@ -1,76 +1,32 @@
-import { PrismaClient } from "@prisma/client";
-import express from "express";
+import express, { Request, Response } from "express";
+import { PrismaClient, User } from "@prisma/client";
+import { UserContoller } from "./controllers/user-contorller";
+import { EntrySheetController } from "./controllers/entry-sheet-controller";
 
-const prisma = new PrismaClient();
+export const prisma = new PrismaClient();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = 3000;
+const user = new UserContoller()
+const entrySheet = new EntrySheetController();
 
 app.use(express.json());
-app.use(express.raw({ type: "application/vnd.custom-type" }));
-app.use(express.text({ type: "text/html" }));
-
-app.get("/todos", async (req, res) => {
-  const todos = await prisma.todo.findMany({
-    orderBy: { createdAt: "desc" },
-  });
-
-  res.json(todos);
+app.get("/", (res : Response) => { 
+  res.json("Hello World!")
 });
+app.get("/user", user.findMany);
+app.post("/user", user.create);
+app.put("/user/:id", user.update);
+app.delete("/user/:id", user.delete);
+app.get("/user/:id", user.findById);
 
-app.post("/todos", async (req, res) => {
-  const todo = await prisma.todo.create({
-    data: {
-      completed: false,
-      createdAt: new Date(),
-      text: req.body.text ?? "Empty todo",
-    },
-  });
+app.get("/entry-sheet", entrySheet.findMany);
+app.post("/entry-sheet", entrySheet.create);
+app.put("/entry-sheet/:id", entrySheet.update);
+app.delete("/entry-sheet/:id", entrySheet.delete);
+app.get("/entry-sheet/:id", entrySheet.findById);
+app.get("/entry-sheet/user/:id", entrySheet.findAllByUser);
 
-  return res.json(todo);
-});
-
-app.get("/todos/:id", async (req, res) => {
-  const id = req.params.id;
-  const todo = await prisma.todo.findUnique({
-    where: { id },
-  });
-
-  return res.json(todo);
-});
-
-app.put("/todos/:id", async (req, res) => {
-  const id = req.params.id;
-  const todo = await prisma.todo.update({
-    where: { id },
-    data: req.body,
-  });
-
-  return res.json(todo);
-});
-
-app.delete("/todos/:id", async (req, res) => {
-  const id = req.params.id;
-  await prisma.todo.delete({
-    where: { id },
-  });
-
-  return res.send({ status: "ok" });
-});
-
-app.get("/", async (req, res) => {
-  res.send(
-    `
-  <h1>Todo REST API</h1>
-  <h2>Available Routes</h2>
-  <pre>
-    GET, POST /todos
-    GET, PUT, DELETE /todos/:id
-  </pre>
-  `.trim(),
-  );
-});
-
-app.listen(Number(port), "0.0.0.0", () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`🚀 Server ready at http://localhost:${PORT}`);
 });
