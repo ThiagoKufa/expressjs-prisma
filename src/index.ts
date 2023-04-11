@@ -12,7 +12,14 @@ const entrySheet = new EntrySheetController();
 
 app.use(express.json());
 app.get("/", (res : Response) => { 
-  res.json("Hello World!")
+  res.send(`
+    <h1>API</h1>
+    <ul>
+      <li><a href="/user">/user</a></li>
+      <li><a href="/entry-sheet">/entry-sheet</a></li>
+    </ul>
+
+  `)
 });
 app.get("/user", user.findMany);
 app.post("/user", user.create);
